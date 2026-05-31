@@ -385,22 +385,28 @@ if "result" in st.session_state:
 
         st.markdown("<hr>", unsafe_allow_html=True)
 
+        import re as _re
+        def _strip(t):
+            """Aggressively strip all HTML tags and decode entities."""
+            if not t:
+                return ""
+            t = _re.sub(r"<[^>]+>", " ", str(t))   # remove tags
+            t = _re.sub(r"&[a-z]+;", " ", t)        # decode common entities
+            t = _re.sub(r"\s+", " ", t).strip()     # collapse whitespace
+            return t
+
         # Signal cards — 3-column grid
         cols = st.columns(3)
         for i, s in enumerate(signals):
-            d      = s.get("data", {})
-            from bs4 import BeautifulSoup as _BS
-            def _clean(t): return _BS(t, "lxml").get_text(separator=" ", strip=True) if t else ""
-            label  = _clean(d.get("name") or d.get("title") or d.get("job_title") or d.get("query") or "Signal")
-            sub    = _clean(d.get("location") or d.get("date") or d.get("company_name") or "")
-            icon   = TYPE_ICONS.get(s.get("signal_type","general"), "📡")
-            src_b  = SOURCE_BADGE.get(s.get("source",""), "badge-violet")
-            urg    = s.get("urgency","")
+            d       = s.get("data", {})
+            label   = _strip(d.get("name") or d.get("title") or d.get("job_title") or d.get("query") or "Signal")
+            sub     = _strip(d.get("location") or d.get("date") or d.get("company_name") or "")
+            summ    = _strip(s.get("summary", ""))
+            icon    = TYPE_ICONS.get(s.get("signal_type","general"), "📡")
+            src_b   = SOURCE_BADGE.get(s.get("source",""), "badge-violet")
+            urg     = s.get("urgency","")
             urg_cls = f"urgency-{urg}" if urg else ""
-            cat    = s.get("wellness_category","")
-            raw_summ = s.get("summary", "")
-            from bs4 import BeautifulSoup as _BS
-            summ = _BS(raw_summ, "lxml").get_text(separator=" ", strip=True) if raw_summ else ""
+            cat     = s.get("wellness_category","")
 
             with cols[i % 3]:
                 st.markdown(f"""

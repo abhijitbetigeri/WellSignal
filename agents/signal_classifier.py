@@ -115,7 +115,7 @@ class SignalClassifier:
                         "urgency": classified[i].get("urgency", "low"),
                         "geography": classified[i].get("geography", "unknown"),
                         "wellness_category": classified[i].get("wellness_category", "other"),
-                        "summary": classified[i].get("summary", ""),
+                        "summary": _strip_html(classified[i].get("summary", "")),
                     })
                 enriched.append(merged)
 
