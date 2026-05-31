@@ -6,5 +6,7 @@ beautifulsoup4
 lxml
 langchain
 langchain-anthropic
+langchain-core
 anthropic
 brightdata-sdk
+streamlit
