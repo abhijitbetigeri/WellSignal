@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from scrapers.classpass_scraper import scrape_classpass
 from scrapers.eventbrite_scraper import scrape_eventbrite
 from scrapers.luma_scraper import scrape_luma_wellness, scrape_luma_query
+from scrapers.partiful_scraper import scrape_partiful
 from scrapers.reddit_scraper import scrape_reddit_multi
 from scrapers.linkedin_scraper import scan_corporate_buyers
 from scrapers.serp_scraper import search_wellness_demand
@@ -84,7 +85,8 @@ def operator_analyze(req: OperatorRequest):
         luma_events = scrape_luma_query(req.category, limit=15, location=req.location)
         demand = search_wellness_demand(f"corporate {req.category} wellness program {req.location}")
 
-        all_signals = listings + events + luma_events + demand
+        partiful_events = scrape_partiful(req.location, req.category)
+        all_signals = listings + events + luma_events + partiful_events + demand
 
         # 2. Classify
         classified = classifier.classify(all_signals)

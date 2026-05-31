@@ -120,9 +120,13 @@ st.markdown("""
 
 # ── Source / urgency color maps ───────────────────────────────────────────────
 SOURCE_BADGE = {
-    "classpass": "badge-violet", "eventbrite": "badge-orange",
-    "luma": "badge-pink", "reddit": "badge-red",
-    "linkedin": "badge-blue", "serp": "badge-cyan",
+    "classpass":  "badge-violet",
+    "eventbrite": "badge-orange",
+    "luma":       "badge-pink",
+    "partiful":   "badge-amber",
+    "reddit":     "badge-red",
+    "linkedin":   "badge-blue",
+    "serp":       "badge-cyan",
 }
 TYPE_ICONS = {
     "demand_spike": "📈", "competitor_move": "🎯",
@@ -223,6 +227,7 @@ if run:
             from scrapers.classpass_scraper import scrape_classpass
             from scrapers.eventbrite_scraper import scrape_eventbrite
             from scrapers.luma_scraper import scrape_luma_wellness, scrape_luma_query
+            from scrapers.partiful_scraper import scrape_partiful
             from scrapers.reddit_scraper import scrape_reddit_multi
             from scrapers.linkedin_scraper import scan_corporate_buyers
             from scrapers.serp_scraper import search_wellness_demand
@@ -242,7 +247,8 @@ if run:
                 events      = scrape_eventbrite(location, category)
                 luma_events = scrape_luma_query(category, limit=15, location=location)
                 demand      = search_wellness_demand(f"corporate {category} wellness program {location}")
-                all_signals = listings + events + luma_events + demand
+                partiful_events = scrape_partiful(location, category)
+                all_signals = listings + events + luma_events + partiful_events + demand
 
                 st.toast("Classifying signals with Claude AI...", icon="🤖")
                 classified  = classifier.classify(all_signals)
