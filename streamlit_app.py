@@ -396,14 +396,49 @@ if "result" in st.session_state:
             """Aggressively strip all HTML tags and decode entities."""
             if not t:
                 return ""
-            t = _re.sub(r"<[^>]+>", " ", str(t))   # remove tags
-            t = _re.sub(r"&[a-z]+;", " ", t)        # decode common entities
-            t = _re.sub(r"\s+", " ", t).strip()     # collapse whitespace
+            t = _re.sub(r"<[^>]+>", " ", str(t))
+            t = _re.sub(r"&[a-z]+;", " ", t)
+            t = _re.sub(r"\s+", " ", t).strip()
             return t
+
+        # ── Source filter ─────────────────────────────────────────────────────
+        available_sources = sorted(set(s.get("source", "") for s in signals if s.get("source")))
+        SOURCE_COLORS_MAP = {
+            "classpass":  "#8b5cf6", "eventbrite": "#f97316", "luma":      "#ec4899",
+            "partiful":   "#f59e0b", "reddit":     "#ef4444", "linkedin":  "#3b82f6",
+            "serp":       "#06b6d4",
+        }
+
+        st.markdown("**Filter by Source**")
+        filter_cols = st.columns(len(available_sources) + 1)
+        selected_sources = []
+
+        with filter_cols[0]:
+            all_selected = st.checkbox("All", value=True, key="src_all")
+
+        for idx, src in enumerate(available_sources):
+            color = SOURCE_COLORS_MAP.get(src, "#6b7280")
+            with filter_cols[idx + 1]:
+                checked = st.checkbox(src.capitalize(), value=True, key=f"src_{src}")
+                if checked:
+                    selected_sources.append(src)
+
+        # If "All" is checked or nothing selected, show everything
+        if all_selected or not selected_sources:
+            filtered_signals = signals
+        else:
+            filtered_signals = [s for s in signals if s.get("source") in selected_sources]
+
+        st.markdown(
+            f"<div style='font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;'>"
+            f"Showing {len(filtered_signals)} of {len(signals)} signals</div>",
+            unsafe_allow_html=True
+        )
+        st.markdown("<hr>", unsafe_allow_html=True)
 
         # Signal cards — 3-column grid
         cols = st.columns(3)
-        for i, s in enumerate(signals):
+        for i, s in enumerate(filtered_signals):
             d       = s.get("data", {})
             label   = _strip(d.get("name") or d.get("title") or d.get("job_title") or d.get("query") or "Signal")
             sub     = _strip(d.get("location") or d.get("date") or d.get("company_name") or "")
