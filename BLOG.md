@@ -9,29 +9,41 @@
 
 ## The Problem
 
-Imagine you run a yoga studio in San Francisco. You want to know:
+Wellness is no longer a niche — it spans yoga, meditation, breathwork, pilates, sound healing, nutrition coaching, mental health programs, corporate retreats, fitness, and more. The industry is massive, growing, and deeply fragmented.
 
-- What are competitors charging for their classes?
-- Which wellness events are selling out — and why?
-- Which companies nearby are actively hiring wellness vendors for their employees?
-- What service bundle should I pitch to land a corporate contract?
+Yet despite this scale, both sides of the wellness market operate almost entirely on gut feel:
 
-You have no easy way to answer any of these questions. You manually browse ClassPass, scroll through Eventbrite, and guess. It takes hours and you still don't have a clear picture.
+**On the operator side**, wellness businesses — whether a pilates studio, a retreat center, a mindfulness coach, a breathwork facilitator, or a corporate wellness consultancy — face the same set of unanswered questions every day:
 
-Now flip to the other side. You're an HR manager at a 200-person tech company. Your CEO wants a corporate wellness program for employees. You spend weeks emailing vendors, comparing pricing, and trying to figure out what a fair deal looks like — with zero benchmarks.
+- What are competitors charging across every category and location?
+- Which wellness events and formats are actually selling — and which are losing demand?
+- Which companies nearby are actively hiring wellness vendors or building employee wellness programs?
+- What service bundle should I pitch to land a corporate B2B contract?
+- How do I write a cold outreach email that references something real and timely?
 
-**WellSignal solves both sides of this problem.** It scrapes the live web, classifies every signal with AI, and delivers a complete GTM intelligence report in under 30 seconds.
+There is no single platform that answers these questions. Operators manually browse ClassPass, scroll Eventbrite, and guess. It takes hours, it's incomplete, and the picture is already stale by the time they act on it.
+
+**On the corporate side**, HR managers and People teams trying to build employee wellness programs face the opposite problem:
+
+- Which vendors are credible and what do they actually offer?
+- What is a fair price per employee per month across yoga, meditation, coaching, or retreats?
+- How do I make a business case to leadership with ROI data?
+- Who do I even reach out to, and what do I say?
+
+They spend weeks manually researching vendors with no benchmarks, no structured data, and no way to compare options at scale.
+
+**WellSignal solves both sides simultaneously.** It scrapes the live web across all wellness categories and formats, classifies every signal with AI, and delivers a complete GTM intelligence report — in under 30 seconds.
 
 ---
 
 ## What is WellSignal?
 
-WellSignal is a **dual-sided GTM (Go-To-Market) intelligence platform** for the wellness industry:
+WellSignal is a **dual-sided GTM (Go-To-Market) intelligence platform** built for the entire wellness ecosystem — not just one category or format, but the full spectrum: yoga, meditation, breathwork, pilates, fitness, sound healing, nutrition, coaching, retreats, and corporate wellness programs.
 
 | Mode | Who it's for | What it delivers |
 |------|-------------|-----------------|
-| 🧘 **Wellness Operator** | Yoga studios, coaches, retreat centers | Competitor pricing, demand signals, corporate buyer radar, B2B bundle recommendations, outreach emails |
-| 🏢 **Corporate HR** | HR teams building employee wellness programs | Curated vendor bundles, benchmarked pricing, ROI projections, ready-to-send outreach |
+| 🧘 **Wellness Operator** | Studios, coaches, retreat centers, breathwork facilitators, meditation teachers, fitness instructors, wellness consultants | Live competitor pricing across all categories, event demand signals, corporate buyer radar, B2B bundle recommendations, personalized outreach emails |
+| 🏢 **Corporate HR** | HR teams, People Ops, Chief People Officers building employee wellness programs | Curated vendor bundles across all wellness formats, benchmarked pricing, ROI projections, ready-to-send vendor outreach |
 
 ---
 
