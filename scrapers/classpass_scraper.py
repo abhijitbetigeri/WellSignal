@@ -6,9 +6,9 @@ and wellness bundle intelligence.
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 try:
-    from scrapers.base_scraper import fetch_url
+    from scrapers.base_scraper import fetch_url, _city_keywords
 except ModuleNotFoundError:
-    from base_scraper import fetch_url
+    from base_scraper import fetch_url, _city_keywords
 
 
 def scrape_classpass(location: str, category: str) -> list[dict]:
@@ -56,6 +56,15 @@ def scrape_classpass(location: str, category: str) -> list[dict]:
             "url": "https://classpass.com" + link_el["href"] if link_el and link_el.get("href", "").startswith("/") else (link_el["href"] if link_el else url),
         }
         listings.append(listing)
+
+    # Location filter — drop results whose location doesn't match the requested city
+    city_keywords = _city_keywords(location)
+    if city_keywords:
+        listings = [
+            l for l in listings
+            if any(kw in (l.get("location") or "").lower() for kw in city_keywords)
+            or l.get("location") in ("N/A", "", None)  # keep if no location data
+        ]
 
     signals = [
         {

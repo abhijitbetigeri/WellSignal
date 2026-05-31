@@ -14,8 +14,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_TOKEN = os.getenv("BRIGHTDATA_API_TOKEN")
-ZONE = os.getenv("BRIGHTDATA_ZONE", "wellsignal_unlocker")
+def _get_secret(key: str, default: str = "") -> str:
+    """Read from env vars first, then fall back to Streamlit secrets."""
+    val = os.getenv(key)
+    if val:
+        return val
+    try:
+        import streamlit as st
+        return st.secrets.get(key, default)
+    except Exception:
+        return default
+
+API_TOKEN = _get_secret("BRIGHTDATA_API_TOKEN")
+ZONE = _get_secret("BRIGHTDATA_ZONE") or "wellsignal_unlocker"
 CACHE_DIR = Path("cache")
 BD_ENDPOINT = "https://api.brightdata.com/request"
 
@@ -152,6 +163,41 @@ def fetch_serp(query: str, num_results: int = 10) -> list[dict]:
     except Exception as e:
         print(f"[error] SERP query failed for '{query}': {e}")
         raise
+
+
+def _city_keywords(location: str) -> list[str]:
+    """
+    Returns a list of lowercase keywords to match against a result's location field.
+    Handles common slug formats like 'san-francisco', 'new-york', 'los-angeles'.
+
+    Args:
+        location: Location slug or city name string.
+
+    Returns:
+        List of lowercase match keywords.
+    """
+    if not location:
+        return []
+    # Normalise slug → readable: "san-francisco" → "san francisco"
+    city = location.lower().replace("-", " ").replace("_", " ").strip()
+    keywords = [city]
+
+    # Common abbreviations / aliases
+    aliases = {
+        "san francisco": ["sf", "san francisco", "s.f."],
+        "new york": ["nyc", "new york", "ny"],
+        "los angeles": ["la", "los angeles", "l.a."],
+        "new york city": ["nyc", "new york", "ny"],
+        "washington dc": ["dc", "washington", "d.c."],
+        "chicago": ["chicago"],
+        "austin": ["austin"],
+        "boston": ["boston"],
+        "seattle": ["seattle"],
+        "miami": ["miami"],
+        "denver": ["denver"],
+    }
+    keywords += aliases.get(city, [])
+    return list(set(keywords))
 
 
 if __name__ == "__main__":

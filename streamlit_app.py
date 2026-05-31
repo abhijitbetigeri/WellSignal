@@ -216,7 +216,7 @@ if run:
                 st.toast("Scraping ClassPass, Eventbrite, Luma, SERP...", icon="🌐")
                 listings    = scrape_classpass(location, category)
                 events      = scrape_eventbrite(location, category)
-                luma_events = scrape_luma_query(category, limit=15)
+                luma_events = scrape_luma_query(category, limit=15, location=location)
                 demand      = search_wellness_demand(f"corporate {category} wellness program {location}")
                 all_signals = listings + events + luma_events + demand
 

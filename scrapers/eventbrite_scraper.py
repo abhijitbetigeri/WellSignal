@@ -6,9 +6,9 @@ Captures event titles, prices, attendance trends by category and location.
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 try:
-    from scrapers.base_scraper import fetch_url
+    from scrapers.base_scraper import fetch_url, _city_keywords
 except ModuleNotFoundError:
-    from base_scraper import fetch_url
+    from base_scraper import fetch_url, _city_keywords
 
 
 def scrape_eventbrite(location: str, keyword: str) -> list[dict]:
@@ -60,6 +60,20 @@ def scrape_eventbrite(location: str, keyword: str) -> list[dict]:
                     "description": "",
                     "url": link_el["href"] if link_el else url,
                 })
+
+    # Location filter — drop events whose title/description don't mention the city
+    city_keywords = _city_keywords(location)
+    if city_keywords:
+        def _event_matches(ev: dict) -> bool:
+            text = " ".join([
+                ev.get("title", ""),
+                ev.get("description", ""),
+                ev.get("url", ""),
+            ]).lower()
+            return any(kw in text for kw in city_keywords)
+        filtered = [e for e in events if _event_matches(e)]
+        # If filter is too aggressive (< 3 results), fall back to all events
+        events = filtered if len(filtered) >= 3 else events
 
     signals = [
         {

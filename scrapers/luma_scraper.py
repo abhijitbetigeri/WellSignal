@@ -9,6 +9,13 @@ import hashlib
 import requests
 from datetime import datetime, timezone
 from pathlib import Path
+try:
+    from scrapers.base_scraper import _city_keywords
+except ModuleNotFoundError:
+    try:
+        from base_scraper import _city_keywords
+    except ModuleNotFoundError:
+        def _city_keywords(location): return []
 
 CACHE_DIR = Path("cache")
 LUMA_API = "https://api.lu.ma/discover/get-paginated-events"
@@ -66,13 +73,14 @@ def _parse_event(item: dict) -> dict:
     }
 
 
-def scrape_luma_query(query: str, limit: int = 20) -> list[dict]:
+def scrape_luma_query(query: str, limit: int = 20, location: str = "") -> list[dict]:
     """
     Fetches Luma events matching a keyword query via the Discover API.
 
     Args:
         query: Wellness keyword e.g. "yoga", "breathwork", "wellness retreat".
         limit: Max events to fetch.
+        location: Optional city filter e.g. "san-francisco". Filters by city keywords.
 
     Returns:
         List of Scraped Signal dicts with Luma event data.
@@ -102,6 +110,20 @@ def scrape_luma_query(query: str, limit: int = 20) -> list[dict]:
             print(f"[luma] API error for '{query}': {e}")
             return []
 
+    # Location filter — match city keywords against event name, description, or URL
+    city_keywords = _city_keywords(location)
+    if city_keywords:
+        def _luma_matches(ev: dict) -> bool:
+            text = " ".join([
+                ev.get("name", ""),
+                ev.get("description", ""),
+                ev.get("url", ""),
+                ev.get("location_type", ""),
+            ]).lower()
+            return any(kw in text for kw in city_keywords)
+        filtered = [e for e in events if _luma_matches(e)]
+        events = filtered if len(filtered) >= 2 else events
+
     signals = [
         {
             "source": "luma",
@@ -112,7 +134,7 @@ def scrape_luma_query(query: str, limit: int = 20) -> list[dict]:
         for event in events
     ]
 
-    print(f"[luma] Found {len(signals)} events for query='{query}'")
+    print(f"[luma] Found {len(signals)} events for query='{query}' location='{location}'")
     return signals
 
 

@@ -81,7 +81,7 @@ def operator_analyze(req: OperatorRequest):
         print(f"[/operator/analyze] Starting scrape for {req.category} in {req.location}")
         listings = scrape_classpass(req.location, req.category)
         events = scrape_eventbrite(req.location, req.category)
-        luma_events = scrape_luma_query(req.category, limit=15)
+        luma_events = scrape_luma_query(req.category, limit=15, location=req.location)
         demand = search_wellness_demand(f"corporate {req.category} wellness program {req.location}")
 
         all_signals = listings + events + luma_events + demand
