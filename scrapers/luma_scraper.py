@@ -44,6 +44,14 @@ def _get_cache_path(key: str) -> Path:
     return path / f"{key_hash}.json"
 
 
+def _strip_html(text: str) -> str:
+    """Strip HTML tags from a string."""
+    from bs4 import BeautifulSoup
+    if not text:
+        return ""
+    return BeautifulSoup(text, "lxml").get_text(separator=" ", strip=True)
+
+
 def _parse_event(item: dict) -> dict:
     """Parse a Luma API event entry into a clean dict."""
     ev = item.get("event", {})
@@ -67,7 +75,7 @@ def _parse_event(item: dict) -> dict:
         "price": price_str,
         "guest_count": item.get("guest_count", 0),
         "organizer": calendar.get("name") or (host_names[0] if host_names else "N/A"),
-        "description": (ev.get("description_short") or "")[:300],
+        "description": _strip_html(ev.get("description_short") or ev.get("description") or "")[:300],
         "url": f"https://lu.ma/{ev.get('url', item.get('api_id', ''))}",
         "tags": ev.get("tags", []),
     }
