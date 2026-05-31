@@ -23,27 +23,28 @@ Yet despite this scale, both sides of the wellness market operate almost entirel
 
 There is no single platform that answers these questions. Operators manually browse ClassPass, scroll Eventbrite, and guess. It takes hours, it's incomplete, and the picture is already stale by the time they act on it.
 
-**On the corporate side**, HR managers and People teams trying to build employee wellness programs face the opposite problem:
+**On the corporate wellness side**, companies increasingly recognise that employee wellbeing directly impacts productivity, retention, and healthcare costs. But building a meaningful wellness program is hard:
 
-- Which vendors are credible and what do they actually offer?
-- What is a fair price per employee per month across yoga, meditation, coaching, or retreats?
-- How do I make a business case to leadership with ROI data?
-- Who do I even reach out to, and what do I say?
+- Which wellness formats actually work for employee engagement — yoga, meditation, coaching, retreats, breathwork?
+- What does a fair, competitive wellness package look like across different provider types and team sizes?
+- How do you evaluate and compare wellness vendors quickly, without spending weeks on calls?
+- How do you make a data-backed business case for investing in employee wellness?
+- Who are the right local wellness providers to partner with, and how do you approach them?
 
-They spend weeks manually researching vendors with no benchmarks, no structured data, and no way to compare options at scale.
+Companies end up with generic, one-size-fits-all wellness perks that employees don't use — because there was no intelligence behind the selection.
 
-**WellSignal solves both sides simultaneously.** It scrapes the live web across all wellness categories and formats, classifies every signal with AI, and delivers a complete GTM intelligence report — in under 30 seconds.
+**WellSignal solves both sides simultaneously.** It is a wellness intelligence product — purpose-built to give the wellness ecosystem the real-time market data it has always lacked. It scrapes the live web across all wellness categories and formats, classifies every signal with AI, and delivers a complete GTM intelligence report in under 30 seconds.
 
 ---
 
 ## What is WellSignal?
 
-WellSignal is a **dual-sided GTM (Go-To-Market) intelligence platform** built for the entire wellness ecosystem — not just one category or format, but the full spectrum: yoga, meditation, breathwork, pilates, fitness, sound healing, nutrition, coaching, retreats, and corporate wellness programs.
+WellSignal is a **wellness intelligence product** — a dual-sided GTM (Go-To-Market) platform built for the entire wellness ecosystem. It covers the full spectrum: yoga, meditation, breathwork, pilates, fitness, sound healing, nutrition, life coaching, corporate retreats, and employee wellness programs.
 
 | Mode | Who it's for | What it delivers |
 |------|-------------|-----------------|
-| 🧘 **Wellness Operator** | Studios, coaches, retreat centers, breathwork facilitators, meditation teachers, fitness instructors, wellness consultants | Live competitor pricing across all categories, event demand signals, corporate buyer radar, B2B bundle recommendations, personalized outreach emails |
-| 🏢 **Corporate HR** | HR teams, People Ops, Chief People Officers building employee wellness programs | Curated vendor bundles across all wellness formats, benchmarked pricing, ROI projections, ready-to-send vendor outreach |
+| 🧘 **Wellness Operator** | Studios, coaches, retreat centers, breathwork facilitators, meditation teachers, fitness instructors, nutrition coaches, wellness consultants | Live competitor pricing across all wellness categories, event demand signals, corporate buyer radar, B2B bundle recommendations, personalized outreach emails |
+| 🏢 **Corporate Wellness** | Companies, wellness committees, and People teams building employee wellness programs | Curated wellness provider bundles across all formats, benchmarked pricing, ROI projections, ready-to-send vendor outreach |
 
 ---
 
