@@ -34,6 +34,33 @@ Return ONLY a valid JSON array. No explanation, no markdown, just the JSON array
 
 
 
+def _strip_html(text: str) -> str:
+    """Strip HTML tags from a string."""
+    if not text or "<" not in str(text):
+        return text
+    try:
+        from bs4 import BeautifulSoup
+        return BeautifulSoup(str(text), "lxml").get_text(separator=" ", strip=True)
+    except Exception:
+        import re
+        return re.sub(r"<[^>]+>", " ", str(text)).strip()
+
+
+def _clean_signal_data(data: dict) -> dict:
+    """Recursively strip HTML from all string values in a signal data dict."""
+    cleaned = {}
+    for k, v in data.items():
+        if isinstance(v, str):
+            cleaned[k] = _strip_html(v)
+        elif isinstance(v, dict):
+            cleaned[k] = _clean_signal_data(v)
+        elif isinstance(v, list):
+            cleaned[k] = [_strip_html(i) if isinstance(i, str) else i for i in v]
+        else:
+            cleaned[k] = v
+    return cleaned
+
+
 def _parse_json(text: str):
     """Strip markdown code fences and parse JSON."""
     text = text.strip()
@@ -59,11 +86,12 @@ class SignalClassifier:
             return []
 
         # Trim signals to just the data payload for LLM efficiency
+        # Strip HTML from all string fields before sending to Claude
         trimmed = [
             {
                 "source": s.get("source"),
                 "url": s.get("url"),
-                "data": s.get("data", {})
+                "data": _clean_signal_data(s.get("data", {}))
             }
             for s in signals
         ]
