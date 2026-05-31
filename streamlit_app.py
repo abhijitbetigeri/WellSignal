@@ -169,11 +169,35 @@ is_operator = mode.startswith("🧘")
 st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 
 # ── Input form ────────────────────────────────────────────────────────────────
+LOCATIONS = {
+    "San Francisco, CA":  "san-francisco",
+    "New York, NY":       "new-york",
+    "Los Angeles, CA":    "los-angeles",
+    "Austin, TX":         "austin",
+    "Chicago, IL":        "chicago",
+    "Seattle, WA":        "seattle",
+    "Miami, FL":          "miami",
+    "Denver, CO":         "denver",
+    "Boston, MA":         "boston",
+    "Washington, DC":     "washington-dc",
+    "Atlanta, GA":        "atlanta",
+    "Portland, OR":       "portland",
+    "Nashville, TN":      "nashville",
+    "San Diego, CA":      "san-diego",
+}
+
+CORP_LOCATIONS = [
+    "San Francisco, CA", "New York, NY", "Los Angeles, CA", "Austin, TX",
+    "Chicago, IL", "Seattle, WA", "Miami, FL", "Denver, CO", "Boston, MA",
+    "Washington, DC", "Atlanta, GA", "Portland, OR", "Nashville, TN", "San Diego, CA",
+]
+
 with st.container():
     if is_operator:
         c1, c2, c3 = st.columns([2, 2, 1])
         with c1:
-            location = st.text_input("Location", value="san-francisco", placeholder="san-francisco")
+            location_label = st.selectbox("Location", list(LOCATIONS.keys()), index=0)
+            location = LOCATIONS[location_label]
         with c2:
             category = st.selectbox("Wellness Category",
                 ["yoga", "meditation", "breathwork", "pilates", "dance", "coaching", "retreat", "fitness"])
@@ -189,7 +213,7 @@ with st.container():
         with c3:
             employees = st.text_input("Employees", value="200", placeholder="200")
         with c4:
-            corp_location = st.text_input("Location", value="San Francisco", placeholder="San Francisco")
+            corp_location = st.selectbox("Location", CORP_LOCATIONS, index=0)
         run = st.button("🏢 Generate Wellness Recommendations")
 
 # ── Run pipeline ──────────────────────────────────────────────────────────────
