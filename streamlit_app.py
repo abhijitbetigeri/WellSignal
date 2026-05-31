@@ -392,14 +392,16 @@ if "result" in st.session_state:
         st.markdown("<hr>", unsafe_allow_html=True)
 
         import re as _re
+        import html as _html
         def _strip(t):
-            """Aggressively strip all HTML tags and decode entities."""
+            """Aggressively strip all HTML tags, decode entities, then re-escape for safe HTML injection."""
             if not t:
                 return ""
             t = _re.sub(r"<[^>]+>", " ", str(t))
-            t = _re.sub(r"&[a-z]+;", " ", t)
+            t = _re.sub(r"&[a-z0-9]+;", " ", t)
+            t = _re.sub(r"&#\d+;", " ", t)
             t = _re.sub(r"\s+", " ", t).strip()
-            return t
+            return _html.escape(t)
 
         # ── Source filter ─────────────────────────────────────────────────────
         available_sources = sorted(set(s.get("source", "") for s in signals if s.get("source")))
