@@ -365,14 +365,18 @@ if "result" in st.session_state:
         cols = st.columns(3)
         for i, s in enumerate(signals):
             d      = s.get("data", {})
-            label  = d.get("name") or d.get("title") or d.get("job_title") or d.get("query") or "Signal"
-            sub    = d.get("location") or d.get("date") or d.get("company_name") or ""
+            from bs4 import BeautifulSoup as _BS
+            def _clean(t): return _BS(t, "lxml").get_text(separator=" ", strip=True) if t else ""
+            label  = _clean(d.get("name") or d.get("title") or d.get("job_title") or d.get("query") or "Signal")
+            sub    = _clean(d.get("location") or d.get("date") or d.get("company_name") or "")
             icon   = TYPE_ICONS.get(s.get("signal_type","general"), "📡")
             src_b  = SOURCE_BADGE.get(s.get("source",""), "badge-violet")
             urg    = s.get("urgency","")
             urg_cls = f"urgency-{urg}" if urg else ""
             cat    = s.get("wellness_category","")
-            summ   = s.get("summary","")
+            raw_summ = s.get("summary", "")
+            from bs4 import BeautifulSoup as _BS
+            summ = _BS(raw_summ, "lxml").get_text(separator=" ", strip=True) if raw_summ else ""
 
             with cols[i % 3]:
                 st.markdown(f"""
