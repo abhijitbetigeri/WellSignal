@@ -2,7 +2,6 @@
 
 ![WellSignal Cover](WellSignal_Blog_Cover.png)
 
-🔗 **Live Demo:** [wellsignal-nqyuy24cvkrenl9zfzuutc.streamlit.app](https://wellsignal-nqyuy24cvkrenl9zfzuutc.streamlit.app/)
 💻 **GitHub:** [github.com/abhijitbetigeri/WellSignal](https://github.com/abhijitbetigeri/WellSignal)
 
 ---
@@ -422,7 +421,199 @@ wellsignal/
 
 ---
 
-## Live Results
+## The Dashboard — What You See and Why
+
+When the pipeline completes, the WellSignal dashboard surfaces four core intelligence constructs. Each one is the output of a distinct layer of the system. Here is exactly what each one means, how it is generated, and how it is displayed.
+
+---
+
+### 1. 📡 Signals Scraped
+
+**What it is:**
+A signal is a single live data point pulled from the web that carries a meaningful wellness market insight. It could be a ClassPass studio listing, an Eventbrite event that sold out, a LinkedIn job post from a company hiring a "Head of Wellness", or a Google search result showing rising demand for breathwork in a city.
+
+**How it is generated:**
+Every scraper (ClassPass, Eventbrite, Luma, LinkedIn, SERP, Reddit) returns a list of raw data objects. Each object goes through the Signal Classifier agent, which enriches it with:
+
+| Field | What it means | Example |
+|-------|--------------|---------|
+| `signal_type` | What kind of market signal this is | `demand_spike`, `competitor_move`, `corporate_buyer`, `review_trend` |
+| `urgency` | How time-sensitive this signal is | `high`, `medium`, `low` |
+| `wellness_category` | Which wellness format this relates to | `yoga`, `meditation`, `breathwork`, `pilates`, `coaching`, `retreat` |
+| `geography` | Where this signal is coming from | `San Francisco, CA` |
+| `summary` | One-line human-readable insight | `"Sold-out corporate breathwork lunch — strong B2B demand signal"` |
+
+**How it appears in the dashboard:**
+- A **summary stats bar** at the top shows the total signal count at a glance
+- A **Source Breakdown panel** shows three charts side by side:
+  - *By Source* — a bar chart showing how many signals came from each platform (ClassPass, Eventbrite, Luma, SERP, LinkedIn) with a colour-coded progress bar per source
+  - *By Urgency* — signals split into high / medium / low with red / yellow / green indicators
+  - *Top Categories* — the most frequently occurring wellness categories across all signals (e.g. yoga × 22, breathwork × 11, meditation × 8)
+- Below the breakdown, every signal renders as a **Signal Card** — a compact tile showing the source badge, wellness category, signal type icon, urgency badge, the signal title, location or date, and Claude's one-line summary
+
+```
+┌──────────────────────────────────────────────┐
+│  [classpass]  [breathwork]          [high]   │
+│                                              │
+│  📈  CorePower Yoga — Mission District       │
+│      San Francisco                           │
+│      "High-rated studio with 1,200+ reviews  │
+│       — strong competitor at this price pt"  │
+└──────────────────────────────────────────────┘
+```
+
+**Why it matters:**
+Wellness operators can instantly see which competitors are gaining traction, which events are creating demand spikes, and which companies are signalling buying intent — all in one view, sourced from live data scraped minutes ago.
+
+---
+
+### 2. 🎯 Market Gaps
+
+**What it is:**
+A market gap is an opportunity that exists in the wellness market but is not currently being served by any competitor. It is not an opinion or a generic suggestion — it is a conclusion drawn by Claude AI after reading all the scraped signals together and identifying what is missing.
+
+**How it is generated:**
+The Competitor Tracker agent receives all classified signals and looks at the full market picture. It asks: given what every competitor is offering, what formats are underserved? What price tiers have no leader? What corporate wellness needs are not being met by existing providers?
+
+It returns:
+- `market_gaps` — a list of 5–7 specific, actionable gaps
+- `rising_categories` — wellness formats gaining momentum in the scraped data
+- `declining_categories` — formats losing relevance
+- `recommendations` — 5 concrete strategic moves the operator can take
+- `summary` — an executive paragraph summarising the competitive landscape
+
+**How it appears in the dashboard:**
+The Analysis tab shows four panels:
+
+- **Market Gaps** — each gap is listed with an amber diamond (◆) indicator. These are specific and grounded — not "offer better service" but "no studio in SF Mission offers a hybrid in-person + digital yoga subscription under $100/month"
+- **Rising Categories** — emerald upward arrows (▲) showing which wellness formats are growing in the scraped signals
+- **Recommendations** — numbered list of prioritised strategic moves, each tied to a real gap observed in the data
+- **Executive Summary** — a paragraph Claude wrote synthesising the entire competitive landscape for that market
+
+```
+◆  No hybrid (in-person + digital) yoga model exists in SF Mission
+◆  Corporate lunch-break sessions underserved — high demand, zero supply
+◆  Premium tier ($55–75/class) has no clear market leader
+▲  Breathwork rising sharply across Eventbrite and Luma events
+▲  Sound healing appearing in corporate wellness job postings
+```
+
+**Why it matters:**
+This is the core intelligence output of WellSignal. Instead of spending weeks doing manual competitive research, a wellness operator gets a prioritised gap list in seconds — grounded in real, live market data, not assumptions.
+
+---
+
+### 3. 📦 Bundles Ready
+
+**What it is:**
+A bundle is a ready-to-pitch service package — a concrete offering a wellness operator can take to a corporate client or a wellness consumer. It is not a generic template. Each bundle is designed around a specific market gap identified in the previous step, with pricing, target audience, and a pitch angle built in.
+
+**How it is generated:**
+The Bundle Recommender agent receives the classified signals and the competitor analysis. It knows what competitors are offering, what is missing, and what demand looks like. It generates exactly 3 bundles per run — one for each tier of the market opportunity.
+
+Each bundle contains:
+
+| Field | Operator Mode | Corporate Wellness Mode |
+|-------|--------------|------------------------|
+| `bundle_name` | "Corporate Lunch Wellness Sprint" | "Full Spectrum Employee Wellness" |
+| `services` | List of session types included | List of wellness formats included |
+| `suggested_price` | Per-session or monthly price | Per-employee per-month price |
+| `target_segment` | Type of corporate client to target | Type of employee population |
+| `competitor_gap` | The specific gap this bundle exploits | The unmet need this program addresses |
+| `outreach_angle` | The pitch line to open a sales call | — |
+| `projected_roi` | — | Expected return per employee per year |
+
+**How it appears in the dashboard:**
+Each of the 3 bundles renders as a **Bundle Card** — a full card with gradient colour coding (violet, emerald, amber) showing:
+- Bundle name and price at the top
+- "Includes" chip list of services
+- Target segment description
+- Market Gap box explaining what competitor gap this bundle addresses
+- For Operator mode: a **Pitch Angle** box with the exact opening line to use in a sales conversation
+- For Corporate Wellness mode: a **Projected ROI** box in green showing the expected financial return
+
+```
+┌─────────────────────────────────────────┐
+│  Bundle 1                               │
+│  Corporate Lunch Wellness Sprint        │
+│                          $1,200/month   │
+│                                         │
+│  Includes                               │
+│  [45-min breathwork] [meditation]       │
+│  [nutrition talk]                       │
+│                                         │
+│  Target                                 │
+│  SoMa tech companies, 50–200 employees  │
+│                                         │
+│  Market Gap                             │
+│  No SF studio offers a packaged         │
+│  corporate lunch-break program          │
+│                                         │
+│  Pitch Angle                            │
+│  "Your team gets 45 minutes back —      │
+│   we handle the recovery"               │
+└─────────────────────────────────────────┘
+```
+
+**Why it matters:**
+Wellness operators do not need to figure out what to sell or how to price it. WellSignal builds the package for them, based on what is actually missing in the market right now. They walk out of the dashboard ready to make a sales call.
+
+---
+
+### 4. ✉️ Outreach Drafts
+
+**What it is:**
+An outreach draft is a personalized B2B email, under 150 words, written by Claude AI and ready to copy and send. It is not a generic cold email template — it references a specific web signal (a Luma event, a LinkedIn job post, a SERP trend) that made this particular vendor or company relevant to contact right now.
+
+**How it is generated:**
+The Outreach Generator agent is the final step in the pipeline and runs only in Corporate Wellness mode. It takes:
+- The top bundle recommendation
+- The classified signals (to find real, specific references)
+- A target vendor profile (company name, contact role)
+
+It generates one email per vendor target, with:
+
+| Field | What it contains |
+|-------|-----------------|
+| `subject` | A specific, non-generic subject line referencing the vendor |
+| `body` | < 150 words — intro, context, ask, next step |
+| `target_role` | Who the email is addressed to |
+| `target_company` | Which wellness provider is being contacted |
+| `signal_used` | The exact web signal that inspired this email |
+
+**How it appears in the dashboard:**
+Each outreach draft renders as an **Outreach Card** — an expandable panel showing:
+- The "To:" field (role + company)
+- The subject line
+- The full email body, formatted and ready to read
+- A signal attribution line at the bottom showing exactly which scraped signal triggered this email
+- A **Copy** button — one click copies the full email (subject + body) to clipboard, ready to paste into Gmail
+
+```
+┌────────────────────────────────────────────────┐
+│  To: Studio Owner @ Mindful Collective SF       │
+│  Subject: Wellness partnership for Stripe's     │
+│           SF team                               │
+│  ─────────────────────────────────────────────  │
+│  Hi Sarah,                                      │
+│                                                 │
+│  I came across your breathwork sessions on      │
+│  Luma — your recent corporate lunch event had   │
+│  a 4.9 rating with 80+ attendees.               │
+│                                                 │
+│  We're building a wellness program for 200      │
+│  engineers at Stripe...                         │
+│                                                 │
+│  Signal used: Luma — Corporate Breathwork       │
+│  Lunch, 82 attendees, sold out                  │
+│                                    [Copy ✉]    │
+└────────────────────────────────────────────────┘
+```
+
+**Why it matters:**
+The hardest part of B2B wellness sales is knowing who to reach out to and what to say. WellSignal eliminates both problems — it identifies which vendors are gaining traction from live web signals, and writes a personalised email that references something real, making it far more likely to get a response than a generic template.
+
+---
 
 A real pipeline run for **yoga in San Francisco** produced:
 
@@ -441,9 +632,7 @@ A real pipeline run for **yoga in San Francisco** produced:
 
 ## Try It Yourself
 
-The live demo is deployed on Streamlit Cloud — no setup required:
-
-👉 **[wellsignal-nqyuy24cvkrenl9zfzuutc.streamlit.app](https://wellsignal-nqyuy24cvkrenl9zfzuutc.streamlit.app/)**
+Clone the repo and run it locally — setup takes under 5 minutes:
 
 **Wellness Operator mode:**
 1. Select `Wellness Operator`
